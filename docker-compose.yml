@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  storefront-ui:
+    build:
+      context: ./storefront-ui
+      dockerfile: Dockerfile
+    image: dropforge/storefront-ui:local
+    ports:
+      - "80:80"
+    networks:
+      - dropforge-network
+    depends_on:
+     - catalog-service
+     - order-service
+  
+  
+  catalog-service:
+    build:
+      context: ./catalog-service
+      dockerfile: Dockerfile
+    image: dropforge/catalog-service:local
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    networks:
+      - dropforge-network
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: dropforge/order-service:local
+    ports:
+      - "8082:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    networks:
+      - dropforge-network
+
+networks:
+  dropforge-network:
+    driver: bridge
