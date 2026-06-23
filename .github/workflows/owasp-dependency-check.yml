@@ -19,19 +19,33 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
+
+      - name: Cache Dependency Check Data
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: dependency-check-${{ runner.os }}
+
       - name: Run OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
+        uses: dependency-check/DependencyCheck-action@4a251f2d93e2b2fb988de47a32c219662f55964f
         with:
           project: 'DropForge Platform'
           path: '.'
-          format: 'HTML'
+          format: 'HTML,SARIF'
           out: 'reports'
           args: >
             --failOnCVSS 7
-            --enableRetried
+  #          --enableRetried
 
       - name: upload SCan Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: owasp-vulnerability-report
           path: reports
+
+      - name: Upload SARIF Results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/dependency-check-report.sarif
