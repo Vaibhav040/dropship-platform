@@ -20,7 +20,7 @@ jobs:
           java-version: 17
           distribution: 'temurin'
       - name: Run OWASP Dependency Check
-        uses: jeremylong/DependencyCheck-action@0.3.0
+        uses: dependency-check/DependencyCheck-action@0.3.0
         with:
           project: 'DropForge Platform'
           path: '.'
