@@ -20,7 +20,7 @@ jobs:
           java-version: 17
           distribution: 'temurin'
       - name: Run OWASP Dependency Check
-        uses: dependency-check/DependencyCheck-action@4a251f2d93e2b2fb988de47a32c219662f55964f
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           project: 'DropForge Platform'
           path: '.'
