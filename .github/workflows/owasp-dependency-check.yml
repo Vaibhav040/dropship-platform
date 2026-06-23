@@ -27,7 +27,7 @@ jobs:
           key: dependency-check-${{ runner.os }}
 
       - name: Run OWASP Dependency Check
-        uses: dependency-check/Dependency-Check-Action@main
+        uses: dependency-check/dependency-check-action@main
         with:
           project: 'DropForge Platform'
           path: '.'
