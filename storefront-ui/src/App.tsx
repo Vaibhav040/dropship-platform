@@ -14,8 +14,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { 
   Card, 
-  CardContent, 
-  CardDescription, 
+  //CardContent, 
+  //CardDescription, 
   CardFooter, 
   CardHeader, 
   CardTitle 
