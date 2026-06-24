@@ -25,7 +25,7 @@ jobs:
         with:
           project: 'DropForge Platform'
           path: '.'
-          format: 'HTML,SARIF'
+          format: 'HTML, SARIF'
           out: 'reports'
           args: >
             --failOnCVSS 7
