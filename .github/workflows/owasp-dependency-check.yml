@@ -25,7 +25,7 @@ jobs:
         with:
           project: 'DropForge Platform'
           path: '.'
-          format: 'HTML, SARIF'
+          format: 'HTML'
           out: 'reports'
           args: >
             --failOnCVSS 7
@@ -37,9 +37,3 @@ jobs:
         with:
           name: owasp-vulnerability-report
           path: reports
-
-      - name: Upload SARIF Results
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: reports/dependency-check-report.sarif
