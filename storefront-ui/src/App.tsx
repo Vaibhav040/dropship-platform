@@ -32,9 +32,7 @@ function App() {
   const addItemToCart = useCartStore((state) => state.addItem);
   const removeItemFromCart = useCartStore((state) => state.removeItem);
   
-  // Grab the addItem function to attach to our buttons
-  /* const addItemToCart = useCartStore((state) => state.addItem); */
-
+  
   // New State for Backend Data
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
