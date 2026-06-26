@@ -25,3 +25,58 @@ export const fetchProducts = async (): Promise<Product[]> => {
     return []; 
   }
 };
+// --- AUTHENTICATION TYPES ---
+
+export interface AuthResponse {
+  token: string;
+}
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+// --- AUTHENTICATION METHODS ---
+
+export const registerUser = async (data: RegisterData): Promise<AuthResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Registration failed");
+  return await response.json();
+};
+
+export const loginUser = async (data: LoginData): Promise<AuthResponse> => {
+  const response = await fetch(`${API_BASE_URL}/api/auth/authenticate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) throw new Error("Login failed");
+  return await response.json();
+};
+
+// --- SECURE FETCH WRAPPER ---
+// We will use this in the future for endpoints that require a user to be logged in
+export const fetchWithAuth = async (endpoint: string, options: RequestInit = {}) => {
+  const token = localStorage.getItem("jwt_token"); // We will store the token in the browser's memory
+  
+  const headers = {
+    "Content-Type": "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...options.headers,
+  };
+
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, { ...options, headers });
+  if (!response.ok) throw new Error(`API Error: ${response.status}`);
+  return await response.json();
+};
