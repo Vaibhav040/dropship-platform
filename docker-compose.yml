@@ -1,6 +1,25 @@
 version: "3.8"
 
 services:
+
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: dropforge-db
+    environment:
+      POSTGRES_DB: dropforge
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass2word
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dropforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dropforge-network
   storefront-ui:
     build:
       context: ./storefront-ui
@@ -19,25 +38,46 @@ services:
     build:
       context: ./catalog-service
       dockerfile: Dockerfile
+    container_name: dropforge-catalog
     image: dropforge/catalog-service:local
     ports:
       - "8081:8080"
+    env_file:
+      - .env
     environment:
       - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dropforge
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=pass2word
     networks:
       - dropforge-network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   order-service:
     build:
       context: ./order-service
       dockerfile: Dockerfile
+    container_name: dropforge-order
     image: dropforge/order-service:local
     ports:
       - "8082:8080"
+    env_file:
+      - .env
     environment:
       - SPRING_PROFILES_ACTIVE=local
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/dropforge
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=pass2word
     networks:
       - dropforge-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
 
 networks:
   dropforge-network:
