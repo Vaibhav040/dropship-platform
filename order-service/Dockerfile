@@ -9,6 +9,7 @@ RUN mvn clean package -DskipTests
 
 # Stage - 2
 FROM eclipse-temurin:17-jre-alpine
+RUN apk update && apk upgrade --no-cache
 WORKDIR /app
 
 RUN addgroup -S spring && adduser -S spring -G spring

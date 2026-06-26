@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useCartStore } from "./store/useCartStore";
+import { useAuthStore } from "./store/useAuthStore";
+import { AuthModal } from "./components/ui/AuthModal";
 import { 
-  ShoppingBag, Search, User, Menu, Star, Filter, ArrowRight, Trash2 // Added Trash2
+  ShoppingBag, Search, Menu, Star, Filter, ArrowRight, Trash2, LogOut // Added Trash2
 } from "lucide-react";
 
 import {
@@ -25,6 +27,8 @@ import { fetchProducts, type Product } from "./services/api";
 function App() {
   const cartItems = useCartStore((state) => state.items);
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const logout = useAuthStore((state) => state.logout);
   
   // Calculate total dollar amount
   const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -76,10 +80,18 @@ function App() {
               <Search className="h-5 w-5" />
             </button>
 
-            {/* Profile */}
-            <button className="rounded-full p-2 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950 transition-all">
-              <User className="h-5 w-5" />
-            </button>
+            {/* User Profile / Auth Modal */}
+            {isAuthenticated ? (
+              <button 
+                onClick={logout}
+                className="rounded-full p-2 text-zinc-600 hover:bg-zinc-100 hover:text-red-600 transition-all group"
+                title="Log Out"
+              >
+                <LogOut className="h-5 w-5" />
+              </button>
+            ) : (
+              <AuthModal />
+            )}
 
             {/* Shopping Cart Trigger & Sidebar */}
             <Sheet>
