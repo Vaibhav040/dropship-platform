@@ -9,7 +9,7 @@ export interface Product {
 }
 
 // Ensure this matches the port your Java catalog-service runs on locally
-const API_BASE_URL = "http://localhost:8080"; 
+const API_BASE_URL = "http://localhost:8081"; 
 
 export const fetchProducts = async (): Promise<Product[]> => {
   try {
