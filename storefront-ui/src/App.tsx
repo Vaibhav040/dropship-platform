@@ -3,7 +3,7 @@ import { useCartStore } from "./store/useCartStore";
 import { useAuthStore } from "./store/useAuthStore";
 import { AuthModal } from "./components/ui/AuthModal";
 import { 
-  ShoppingBag, Search, User, Menu, Star, Filter, ArrowRight, Trash2, LogOut // Added Trash2
+  ShoppingBag, Search, Menu, Star, Filter, ArrowRight, Trash2, LogOut // Added Trash2
 } from "lucide-react";
 
 import {
