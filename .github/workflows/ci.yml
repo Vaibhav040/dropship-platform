@@ -1,0 +1,69 @@
+name: Dropforge CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build_frontend:
+    name: Build Storefront UI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./storefront-ui
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './storefront-ui/package-lock.json'
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Build Vite React App
+        run: npm run build
+
+  build-catalog-service:
+    name: Build Catalog API
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./catalog-service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile maven .jar
+        run: mvn clean package -DskipTests
+
+  build-order-service:
+    name: Build Order API
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./order-service
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile maven .jar
+        run: mvn clean package -DskipTests
+
+  verify-docker-builds:
+    name: Verify Docker Builds
+    needs: [build_frontend, build-catalog-service, build-order-service]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Test Infrastructure Build
+        run: docker compose build
