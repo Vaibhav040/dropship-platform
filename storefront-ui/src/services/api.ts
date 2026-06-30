@@ -80,3 +80,20 @@ export const fetchWithAuth = async (endpoint: string, options: RequestInit = {})
   if (!response.ok) throw new Error(`API Error: ${response.status}`);
   return await response.json();
 };
+
+export const checkoutOrder = async (orderData: any, token: string) => {
+  // Notice we use port 8082 here, which targets the order-service container!
+  const response = await fetch(`http://localhost:8082/api/orders/checkout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(orderData),
+  });
+  
+  if (!response.ok) {
+    throw new Error("Checkout processing failed");
+  }
+  return response.json();
+};
