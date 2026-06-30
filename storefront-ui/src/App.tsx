@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCartStore } from "./store/useCartStore";
 import { useAuthStore } from "./store/useAuthStore";
+import { CheckoutModal } from "./components/CheckoutModal";
 import { AuthModal } from "./components/ui/AuthModal";
 import { 
   ShoppingBag, Search, Menu, Star, Filter, ArrowRight, Trash2, LogOut // Added Trash2
@@ -150,9 +151,7 @@ function App() {
                       <span>Subtotal</span>
                       <span>${cartTotal.toFixed(2)}</span>
                     </div>
-                    <Button className="w-full text-base h-12">
-                      Secure Checkout
-                    </Button>
+                    <CheckoutModal />
                   </div>
                 )}
               </SheetContent>
