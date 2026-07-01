@@ -92,31 +92,34 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: dropship-order-service
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ secrets.GITHUB_SHA }}
         run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "Building order-service image..."
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./order-service
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA ./order-service
           echo "Pushing order-service image to ECR..."
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
 
       - name: Build and Push Storefront-ui Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: dropship-storefront-ui
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ secrets.GITHUB_SHA }}
         run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "Building storefront-ui image..."
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./storefront-ui
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA ./storefront-ui
           echo "Pushing storefront-ui image to ECR..."
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
 
       - name: Build and Push catalog-service Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: dropship-catalog-service
-          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_TAG: ${{ secrets.GITHUB_SHA }}
         run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
           echo "Building catalog-service image..."
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./catalog-service
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA ./catalog-service
           echo "Pushing catalog-service image to ECR..."
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
