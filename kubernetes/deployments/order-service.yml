@@ -30,24 +30,24 @@ spec:
         ports:
           - containerPort: 8080
         env:
-          - name: DB_URL
+          - name: SPRING_DATASOURCE_URL
             value: "jdbc:postgresql://order-db.dropship.svc.cluster.local:5432/dropship"
-          - name: DB_USERNAME
+          - name: SPRING_DATASOURCE_USERNAME
             valueFrom:
               secretKeyRef:
                 name: db-secret
                 key: username
-          - name: DB_PASSWORD
+          - name: SPRING_DATASOURCE_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: db-secret
                 key: password
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 5
+          - name: STRIPE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: stripe-secret
+                key: api-key
+        
 ---
 apiVersion: v1
 kind: Service

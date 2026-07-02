@@ -4,13 +4,20 @@ metadata:
   name: dropship-ingress
   namespace: dropship
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 spec:
+  ingressClassName: alb
   rules:
   - http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: catalog-service
+            port:
+              number: 8081
       - pathType: Prefix
         path: /
         backend:
