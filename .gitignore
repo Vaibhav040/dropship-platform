@@ -51,3 +51,7 @@ yarn-error.log*
 # 6. Frontend Cache Overrides
 storefront-ui/.vite/
 .vite/
+
+# IAM poilicy
+iam_policy.json
+iam_policy_latest.json
