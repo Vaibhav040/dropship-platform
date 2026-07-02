@@ -32,6 +32,7 @@ spec:
       labels:
         app: catalog-db
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: postgres
         image: postgres:15.3-alpine
@@ -40,9 +41,11 @@ spec:
                 requests:
                   memory: "512Mi"
                   cpu: "250m"
+                  ephemeral-storage: "500Mi"
                 limits:
                   memory: "1Gi"
                   cpu: "500m"
+                  ephemeral-storage: "1Gi"
         ports:
           - containerPort: 5432
         env:

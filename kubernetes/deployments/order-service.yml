@@ -16,6 +16,7 @@ spec:
       labels:
         app: order-service
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: order-service
         image: 773384830615.dkr.ecr.ap-south-1.amazonaws.com/dropship-order-service:c927801
@@ -24,9 +25,11 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+            ephemeral-storage: "100Mi"
           limits:
             memory: "512Mi"
             cpu: "500m"
+            ephemeral-storage: "200Mi"
         ports:
           - containerPort: 8080
         env:

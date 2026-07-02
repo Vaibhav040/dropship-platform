@@ -15,6 +15,7 @@ spec:
       labels:
         app: storefront-ui
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: storefront-ui
         image: 773384830615.dkr.ecr.ap-south-1.amazonaws.com/dropship-storefront-ui:c927801
@@ -23,9 +24,11 @@ spec:
           requests:
             memory: "256Mi"
             cpu: "250m"
+            ephemeral-storage: "50Mi"
           limits:
             memory: "512Mi"
             cpu: "500m"
+            ephemeral-storage: "100Mi"
         ports:
           - containerPort: 80
 ---
